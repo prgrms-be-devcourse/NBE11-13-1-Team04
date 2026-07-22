@@ -53,6 +53,10 @@ public class Product {
     }
 
 
+    public boolean hasEnoughStock(int quantity) {
+        return this.stock >= quantity;
+    }
+
     public void decreaseStock(int quantity) {
 
         if (this.stock < quantity) {

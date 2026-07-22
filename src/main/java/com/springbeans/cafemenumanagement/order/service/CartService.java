@@ -2,12 +2,18 @@ package com.springbeans.cafemenumanagement.order.service;
 
 
 import com.springbeans.cafemenumanagement.order.dto.request.CartOrderRequest;
-import com.springbeans.cafemenumanagement.order.repository.OrderProductRepository;
+import com.springbeans.cafemenumanagement.order.entity.Order;
+import com.springbeans.cafemenumanagement.order.entity.OrderProduct;
+import com.springbeans.cafemenumanagement.order.repository.OrderRepository;
 import com.springbeans.cafemenumanagement.product.entity.Product;
+import com.springbeans.cafemenumanagement.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.time.LocalDateTime;
 
 
 @Service
@@ -15,7 +21,8 @@ import org.springframework.web.server.ResponseStatusException;
 public class CartService {
 
 
-    private final OrderProductRepository orderProductRepository;
+    private final ProductRepository productRepository;
+    private final OrderRepository orderRepository;
 
 
     /**
@@ -29,14 +36,14 @@ public class CartService {
                 .forEach(item -> {
 
                     Product product =
-                            orderProductRepository.findById(item.getProductId())
+                            productRepository.findById(item.getProductId())
                                     .orElseThrow(() ->
                                             new ResponseStatusException(
                                                     HttpStatus.NOT_FOUND,
                                                     "상품이 존재하지 않습니다. (상품ID: " + item.getProductId() + ")"
                                             ));
 
-                    if (product.getStock() < item.getAmount()) {
+                    if (!product.hasEnoughStock(item.getAmount())) {
 
                         throw new ResponseStatusException(
                                 HttpStatus.BAD_REQUEST,
@@ -62,39 +69,71 @@ public class CartService {
 
 
     /**
-     * 주문 생성
+     * 장바구니 -> 주문 생성
      */
+    @Transactional
     public void createOrder(
             CartOrderRequest request
     ){
 
-        // 주문 생성 전에도 동일하게 존재/재고 검증
+        // 존재 여부 + 재고 검증 먼저 수행
         check(request);
 
-        /*
-          여기서
+        LocalDateTime start =
+                LocalDateTime.now()
+                        .toLocalDate()
+                        .atStartOfDay();
 
-          1. Order 생성
+        LocalDateTime end =
+                LocalDateTime.now()
+                        .toLocalDate()
+                        .atTime(14, 0);
 
-          2. OrderItem 생성
+        Order order =
+                orderRepository
+                        .findFirstByEmailAndOrderedAtBetween(
+                                request.getEmail(),
+                                start,
+                                end
+                        )
+                        .orElseGet(() -> {
 
-          3. 저장
+                            Order newOrder =
+                                    Order.create(
+                                            request.getEmail(),
+                                            request.getAddress(),
+                                            request.getPostalCode()
+                                    );
 
-          진행
-
-        */
-
+                            return orderRepository.save(newOrder);
+                        });
 
         request.getItems()
                 .forEach(item -> {
 
-                    System.out.println(
-                            "주문 상품 : "
-                                    + item.getProductId()
-                    );
+                    Product product =
+                            productRepository.findById(item.getProductId())
+                                    .orElseThrow(() ->
+                                            new ResponseStatusException(
+                                                    HttpStatus.NOT_FOUND,
+                                                    "상품이 존재하지 않습니다. (상품ID: " + item.getProductId() + ")"
+                                            ));
+
+                    // 재고 차감 (영속 상태 엔티티라 트랜잭션 커밋 시 자동 반영됨)
+                    product.decreaseStock(item.getAmount());
+
+                    OrderProduct orderProduct =
+                            new OrderProduct(
+                                    product,
+                                    item.getAmount(),
+                                    order
+                            );
+
+                    order.addItem(orderProduct);
 
                 });
 
+        orderRepository.save(order);
     }
 
 

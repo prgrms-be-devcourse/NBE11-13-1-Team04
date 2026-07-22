@@ -11,6 +11,7 @@ public record AdminOrderListResponse(
         OrderStatus status,
         String statusDescription,
         LocalDateTime orderedAt,
+        LocalDateTime completedAt,
         int totalAmount,
         int totalPrice
 ) {

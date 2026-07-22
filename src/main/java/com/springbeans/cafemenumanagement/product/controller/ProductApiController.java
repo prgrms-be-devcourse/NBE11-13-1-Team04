@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/product")
+@RequestMapping("api/products")
 public class ProductApiController implements ProductApiControllerSpec {
     @Autowired
     private ProductService productService;
@@ -33,11 +33,27 @@ public class ProductApiController implements ProductApiControllerSpec {
 
     @GetMapping
     public ResponseEntity<List<ProductResponse>> getAllProducts() throws IOException {
-        return productService.getAll();
+        try {
+            return productService.getAll();
+        } catch (Exception e) {
+            e.printStackTrace(); // 인텔리제이 콘솔에 진짜 원인 에러 출력
+            return ResponseEntity.internalServerError().build(); // 500 Internal Server Error 반환
+        }
     }
 
-    @GetMapping("/{category}")
+    @GetMapping("category/{category}")
     public ResponseEntity<List<ProductResponse>> getProductsByCategory(@PathVariable String category) {
         return productService.getByCategory(category);
+    @Operation(summary = "상품 수정")
+    
+    @PostMapping("/{id}")
+    public ResponseEntity<ProductSaveResponse> updateProduct( @PathVariable Long id, @Valid @ModelAttribute ProductSaveRequest request ) throws IOException {
+        return productService.update(id, request);
+    }
+
+   
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProduct( @PathVariable Long id ) throws IOException {
+        return productService.delete(id);
     }
 }

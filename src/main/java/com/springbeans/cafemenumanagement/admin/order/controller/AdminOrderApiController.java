@@ -23,34 +23,38 @@ public class AdminOrderApiController {
     public ResponseEntity<List<AdminOrderListResponse>> getOrders(
             @ModelAttribute AdminOrderSearchCondition condition
                                                                  ) {
-        List<AdminOrderListResponse> response = adminOrderService.getOrders(condition);
-        return ResponseEntity.ok(response);
+        try {
+            List<AdminOrderListResponse> response = adminOrderService.getOrders(condition);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @GetMapping("/{orderId}")
     public ResponseEntity<AdminOrderDetailResponse> getOrderDetail(
             @PathVariable Long orderId
-                                                                  )
-    {
+                                                                  ) {
         AdminOrderDetailResponse response = adminOrderService.getOrderDetail(orderId);
 
         return ResponseEntity.ok(response);
     }
 
     @PatchMapping("/{orderId}/cancel-approve")
-    public ResponseEntity<Void> approveCancel(@PathVariable Long orderId) {
+    public ResponseEntity<Void> approveCancel( @PathVariable Long orderId ) {
         adminOrderService.approveCancelOrder(orderId);
         return ResponseEntity.ok().build();
     }
 
     @PatchMapping("/{orderId}/cancel-reject")
-    public ResponseEntity<Void> rejectCancel(@PathVariable Long orderId) {
+    public ResponseEntity<Void> rejectCancel( @PathVariable Long orderId ) {
         adminOrderService.rejectCancelOrder(orderId);
         return ResponseEntity.ok().build();
     }
 
     @PatchMapping("/{orderId}/cancel")
-    public ResponseEntity<Void> cancelOrder(@PathVariable Long orderId) {
+    public ResponseEntity<Void> cancelOrder( @PathVariable Long orderId ) {
         adminOrderService.cancelOrder(orderId);
         return ResponseEntity.ok().build();
     }

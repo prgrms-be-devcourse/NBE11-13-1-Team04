@@ -7,12 +7,10 @@ import com.springbeans.cafemenumanagement.order.dto.response.OrderDetailResponse
 import com.springbeans.cafemenumanagement.order.dto.response.OrderSummaryResponse;
 import com.springbeans.cafemenumanagement.order.entity.Order;
 import com.springbeans.cafemenumanagement.order.entity.OrderProduct;
-import com.springbeans.cafemenumanagement.order.entity.OrderStatus;
 import com.springbeans.cafemenumanagement.order.repository.OrderRepository;
 import com.springbeans.cafemenumanagement.product.entity.Product;
 import com.springbeans.cafemenumanagement.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,7 +32,7 @@ public class OrderService {
     @Transactional
     public OrderCreateResponse createOrder(
             OrderCreateRequest request
-                                          ) {
+    ) {
 
 
         LocalDateTime start =
@@ -46,7 +44,7 @@ public class OrderService {
         LocalDateTime end =
                 LocalDateTime.now()
                         .toLocalDate()
-                        .atTime(14,0);
+                        .atTime(14, 0);
 
 
 
@@ -64,32 +62,30 @@ public class OrderService {
                                             request.email(),
                                             request.address(),
                                             request.postalCode()
-                                                );
+                                    );
 
                             return orderRepository.save(newOrder);
                         });
 
 
-
-//        request.items()
-//                .forEach(item -> {
-//
-//                    OrderProduct orderItem =
-//                            new OrderProduct(
-//                                    item.productId(),
-//                                    item.amount(),
-//                                    order
-//                            );
-//
-//
-//                    order.addItem(orderItem);
-//
-//                });
         request.items().forEach(item -> {
+
             // DB에서 실제 Product 엔티티 조회 (존재하지 않는 상품 예외 처리)
             Product product = productRepository.findById(item.productId())
                     .orElseThrow(() -> new ResponseStatusException(
                             HttpStatus.NOT_FOUND, "존재하지 않는 상품입니다. ID: " + item.productId()));
+
+            // 재고 검증: 부족하면 남은 재고 수량과 함께 알림
+            if (!product.hasEnoughStock(item.amount())) {
+                throw new ResponseStatusException(
+                        HttpStatus.BAD_REQUEST,
+                        "'" + product.getName() + "' 상품의 재고가 부족합니다. 현재 재고: "
+                                + product.getStock() + "개"
+                );
+            }
+
+            // 재고 차감 (영속 상태 엔티티라 트랜잭션 커밋 시 자동 반영됨)
+            product.decreaseStock(item.amount());
 
             OrderProduct orderItem = new OrderProduct(
                     product,
@@ -101,10 +97,8 @@ public class OrderService {
         });
 
 
-
         Order savedOrder =
                 orderRepository.save(order);
-
 
 
         return new OrderCreateResponse(
@@ -134,7 +128,7 @@ public class OrderService {
     /**
      * 주문 상세 조회
      */
-    public OrderDetailResponse getOrder( Long orderId ) {
+    public OrderDetailResponse getOrder(Long orderId) {
 
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() ->
@@ -154,36 +148,21 @@ public class OrderService {
     /**
      * 주문 취소 요청
      */
-    public OrderCancelResponse requestCancel( Long orderId ) {
+    @Transactional
+    public OrderCancelResponse requestCancel(Long orderId) {
 
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() ->
                         new ResponseStatusException(HttpStatus.NOT_FOUND, "주문을 찾을 수 없습니다."));
 
-        if (order.getStatus() == OrderStatus.CONFIRMED) {
+        if (!order.getStatus().isCancelable()) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST,
-                    "확정된 주문은 취소할 수 없습니다."
-            );
-        }
-
-        if (order.getStatus() == OrderStatus.CANCEL_REQUESTED) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    "이미 취소 요청된 주문입니다."
-            );
-        }
-
-        if (order.getStatus() == OrderStatus.CANCELED) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    "이미 취소된 주문입니다."
+                    "취소할 수 없는 주문 상태입니다. (현재 상태: " + order.getStatus().getDescription() + ")"
             );
         }
 
         order.requestCancel();
-
-        orderRepository.save(order);
 
         return new OrderCancelResponse(
                 order.getId(),

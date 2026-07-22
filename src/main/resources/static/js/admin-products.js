@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
     fetchProducts();
 });
 
-const API_BASE_URL = "/api/v1/products";
+const API_BASE_URL = "/api/products";
 let productList = [];
 
 // ==========================================================================
@@ -10,7 +10,13 @@ let productList = [];
 // ==========================================================================
 async function fetchProducts(endpoint = API_BASE_URL) {
     try {
-        const response = await fetch(endpoint);
+        const response = await fetch(endpoint, {
+            method: "GET",
+            headers: {
+                "Accept": "application/json"
+            },
+            credentials: "include" // 👈 세션 쿠키 전송 필수!
+        });
         if (!response.ok) {
             throw new Error("상품 목록을 불러오는 데 실패했습니다.");
         }
@@ -38,8 +44,11 @@ function renderProductTable(products) {
         tr.innerHTML = `
             <td>${product.id}</td>
             <td>
-                <img src="${product.filePath}" alt="${product.name}" class="product-img-thumb" 
-                     onerror="this.src='https://via.placeholder.com/50?text=No+Img'">
+                <!-- 👇 기존 <img> 태그를 이 코드(placehold.co + onerror=null)로 교체하시면 됩니다! -->
+                <img src="${product.filePath || 'https://placehold.co/50x50?text=No+Img'}" 
+                     alt="${product.name}" 
+                     class="product-img-thumb" 
+                     onerror="this.onerror=null; this.src='https://placehold.co/50x50?text=No+Img';">
             </td>
             <td><strong>${product.name}</strong></td>
             <td><span class="badge">${product.category}</span></td>

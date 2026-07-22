@@ -7,6 +7,12 @@ import java.util.List;
 @Getter
 public class CartOrderRequest {
 
+    private String email;
+
+    private String address;
+
+    private String postalCode;
+
     private List<CartItem> items;
 
 

@@ -22,7 +22,8 @@ function renderOrderTable(orders) {
     tbody.innerHTML = "";
 
     if (!orders || orders.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center;">조회된 주문 내역이 없습니다.</td></tr>`;
+        // colspan을 8로 변경
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align:center;">조회된 주문 내역이 없습니다.</td></tr>`;
         return;
     }
 
@@ -37,14 +38,20 @@ function renderOrderTable(orders) {
 
         const statusClass = getStatusBadgeClass(order.status);
         const formattedPrice = order.totalPrice ? order.totalPrice.toLocaleString() + "원" : "0원";
-        const formattedDate = order.orderedAt ? order.orderedAt.replace("T", " ").substring(0, 16) : "-";
+
+        // 주문일시 포맷팅
+        const formattedOrderedDate = order.orderedAt ? order.orderedAt.replace("T", " ").substring(0, 16) : "-";
+
+        // 확정일시 포맷팅 (미확정이거나 NULL 일 경우 '-' 표시)
+        const formattedConfirmedDate = order.completedAt ? order.completedAt.replace("T", " ").substring(0, 16) : "-";
 
         tr.innerHTML = `
             <td><strong>${order.orderCode}</strong></td>
             <td>${order.email}</td>
             <td>${order.totalAmount}개</td>
             <td>${formattedPrice}</td>
-            <td>${formattedDate}</td>
+            <td>${formattedOrderedDate}</td>
+            <td>${formattedConfirmedDate}</td> <!-- 👈 추가 -->
             <td><span class="status-badge ${statusClass}">${order.statusDescription}</span></td>
             <td>
                 <button class="btn-sm btn-outline" onclick="goDetail(${order.orderId})">상세보기</button>

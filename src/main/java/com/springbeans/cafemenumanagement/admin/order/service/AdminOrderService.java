@@ -36,19 +36,27 @@ public class AdminOrderService {
 
 
     private AdminOrderListResponse convertToAdminOrderListResponse( Order order ) {
-        int totalAmount = order.getOrderProducts().stream()
-                .mapToInt(OrderProduct::getAmount).sum();
+        List<OrderProduct> orderProducts = order.getOrderProducts() != null ? order.getOrderProducts() : List.of();
 
-        int totalPrice = order.getOrderProducts().stream()
-                .mapToInt(op -> op.getProduct().getPrice() * op.getAmount()).sum();
+        int totalAmount = orderProducts.stream()
+                .filter(op -> op != null)
+                .mapToInt(OrderProduct::getAmount)
+                .sum();
+
+        int totalPrice = orderProducts.stream()
+                .filter(op -> op != null && op.getProduct() != null)
+                .mapToInt(op -> op.getProduct().getPrice() * op.getAmount())
+                .sum();
+        String statusDesc = (order.getStatus() != null) ? order.getStatus().getDescription() : "";
 
         return new AdminOrderListResponse(
                 order.getId(),
                 order.getOrderCode(),
                 order.getEmail(),
                 order.getStatus(),
-                order.getStatus().getDescription(),
+                statusDesc,
                 order.getOrderedAt(),
+                order.getConfirmedAt(),
                 totalAmount,
                 totalPrice
         );
