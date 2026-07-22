@@ -6,7 +6,7 @@
 }
 
 body {
-    background: #f8f9fa; /* 조금 더 밝고 쾌적한 라이트 그레이 */
+    background: #f8f9fa;
     color: #333;
     height: 100vh;
     overflow: hidden;
@@ -19,11 +19,11 @@ body {
 }
 
 /* ==========================================================================
-   사이드바 스태프 스타일 (브라운 컨셉 강조)
+   사이드바 스타일
    ========================================================================== */
 .sidebar {
     width: 260px;
-    background: #5d4037; /* 로그인 버튼 호버에 쓰인 짙은 브라운 */
+    background: #5d4037;
     color: white;
     display: flex;
     flex-direction: column;
@@ -62,7 +62,7 @@ body {
 }
 
 .menu-list a:hover, .menu-list a.active {
-    background: #6f4e37; /* 커피빈 시그니처 브라운 */
+    background: #6f4e37;
     color: #ffffff;
     font-weight: 600;
 }
@@ -114,6 +114,12 @@ body {
     font-size: 14px;
 }
 
+.header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 /* 어드민 공통 카드 */
 .admin-card {
     background: white;
@@ -121,6 +127,17 @@ body {
     border-radius: 12px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, .04);
     margin-bottom: 20px;
+}
+
+.card-title {
+    font-size: 18px;
+    color: #5d4037;
+}
+
+.divider {
+    margin: 15px 0;
+    border: 0;
+    border-top: 1px solid #eee;
 }
 
 .text-right {
@@ -144,7 +161,46 @@ body {
 }
 
 /* ==========================================================================
-   데이터 테이블 테이블 스타일
+   검색 필터 스타일
+   ========================================================================== */
+.filter-form {
+    display: flex;
+    gap: 20px;
+    align-items: flex-end;
+    flex-wrap: wrap;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.filter-group label {
+    font-size: 13px;
+    color: #5d4037;
+    font-weight: 600;
+}
+
+.filter-group input, .filter-group select {
+    padding: 9px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    outline: none;
+}
+
+.filter-group input:focus, .filter-group select:focus {
+    border-color: #6f4e37;
+}
+
+.filter-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+/* ==========================================================================
+   데이터 테이블 스타일
    ========================================================================== */
 .menu-table {
     width: 100%;
@@ -168,6 +224,15 @@ body {
     background: #fdfbfa;
 }
 
+.clickable-table tbody tr {
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.clickable-table tbody tr:hover {
+    background: #f5efe8;
+}
+
 /* 뱃지 스타일 */
 .badge {
     background: #efebe9;
@@ -183,6 +248,12 @@ body {
     border-radius: 20px;
     font-size: 12px;
     font-weight: 500;
+    display: inline-block;
+}
+
+.status-badge.ordered {
+    background: #e3f2fd;
+    color: #1565c0;
 }
 
 .status-badge.available {
@@ -190,12 +261,17 @@ body {
     color: #2e7d32;
 }
 
+.status-badge.warning {
+    background: #fff8e1;
+    color: #f57f17;
+}
+
 .status-badge.soldout {
     background: #ffebee;
     color: #c62828;
 }
 
-/* 작은 관리 버튼들 */
+/* 버튼 스타일 */
 .btn-sm {
     padding: 6px 12px;
     border-radius: 4px;
@@ -207,8 +283,12 @@ body {
 
 .btn-outline {
     background: white;
-    border-color: #ddd;
+    border: 1px solid #ddd;
     color: #666;
+    padding: 9px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
 }
 
 .btn-outline:hover {
@@ -224,4 +304,61 @@ body {
 .btn-danger:hover {
     background: #c62828;
     color: white;
+}
+
+/* 상세 화면 전용 */
+.detail-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    font-size: 14px;
+}
+
+.total-price-wrapper {
+    text-align: right;
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.total-price-wrapper span {
+    color: #6f4e37;
+}
+
+/* 승인 버튼 */
+.btn-success {
+    background: #2e7d32;
+    color: white;
+    border: none;
+    padding: 9px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+}
+.btn-success:hover {
+    background: #1b5e20;
+}
+
+/* 거절 버튼 */
+.btn-warning {
+    background: #f57f17;
+    color: white;
+    border: none;
+    padding: 9px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+}
+.btn-warning:hover {
+    background: #e65100;
+}
+
+/* 버튼 컨테이너 여백 */
+#actionButtonContainer {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+    margin-top: 20px;
 }

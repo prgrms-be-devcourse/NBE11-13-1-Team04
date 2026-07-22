@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Coffee Bean Admin - 주문 관리</title>
+    <link rel="stylesheet" href="/css/admin-orders.css">
+</head>
+<body>
+<div class="admin-container">
+    <!-- 사이드바 -->
+    <aside class="sidebar">
+        <div class="logo">
+            <h2>☕ Coffee Bean</h2>
+            <span>Admin System</span>
+        </div>
+        <nav class="menu-list">
+            <a href="/admin/orders" class="active">🛍️ 주문 관리</a>
+            <a href="#" onclick="alert('준비 중인 기능입니다.')">📊 매출 통계</a>
+        </nav>
+        <div class="sidebar-footer">
+            <button class="btn-logout" onclick="logout()">🔓 로그아웃</button>
+        </div>
+    </aside>
+
+    <!-- 메인 콘텐츠 영역 -->
+    <main class="main-content">
+        <header class="content-header">
+            <h1>🛍️ 주문 관리</h1>
+            <p>고객의 주문 목록 조회, 기간 및 상태 검색, 상세 조회를 관리합니다.</p>
+        </header>
+
+        <section class="content-body">
+            <!-- 검색 필터 카드 -->
+            <div class="admin-card">
+                <form id="searchForm" class="filter-form" onsubmit="searchOrders(event)">
+                    <div class="filter-group">
+                        <label for="statusSelect">주문 상태</label>
+                        <select id="statusSelect" name="status">
+                            <option value="">전체 상태</option>
+                            <option value="ORDERED">미확정 (ORDERED)</option>
+                            <option value="CONFIRMED">주문 확정 (CONFIRMED)</option>
+                            <option value="CANCEL_REQUESTED">취소 요청 (CANCEL_REQUESTED)</option>
+                            <option value="CANCELED">취소 완료 (CANCELED)</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="startDate">시작일</label>
+                        <input type="date" id="startDate" name="startDate">
+                    </div>
+                    <div class="filter-group">
+                        <label for="endDate">종료일</label>
+                        <input type="date" id="endDate" name="endDate">
+                    </div>
+                    <div class="filter-buttons">
+                        <button type="submit" class="btn-primary">조회</button>
+                        <button type="button" class="btn-outline" onclick="resetFilters()">초기화</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- 주문 목록 리스트 카드 -->
+            <div class="admin-card">
+                <table class="menu-table clickable-table">
+                    <thead>
+                    <tr>
+                        <th>주문번호</th>
+                        <th>이메일</th>
+                        <th>총 수량</th>
+                        <th>총 결제금액</th>
+                        <th>주문일시</th>
+                        <th>상태</th>
+                        <th>관리</th>
+                    </tr>
+                    </thead>
+                    <tbody id="orderTableBody">
+                    <!-- JS에서 동적으로 렌더링 -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+</div>
+<script src="/js/admin-orders.js"></script>
+</body>
+</html>

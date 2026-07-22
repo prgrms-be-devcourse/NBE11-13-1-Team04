@@ -27,13 +27,13 @@ public class SecurityConfig {
                                                .requestMatchers("/admin/login", "/admin/auth/login", "/css/**", "/js/**").permitAll()
 
                                                // 시큐리티 세션 인증(authenticated)이 완료된 상태여야만 접근 가능
-                                               .requestMatchers("/admin/**").authenticated()
+                                               .requestMatchers("/admin/**", "/api/admin/**").authenticated()
 
                                                // 나머지 모든 요청도 우선 허용
                                                .anyRequest().permitAll()
                                       )
 
-                // 세션이 없거나 쿠키를 지운 익명 사용자가 /admin/** 주소로 강제 진입 시도할 때 작동
+                // 세션이 없거나 쿠키를 지운 익명 사용자가 /admin/**, 또는 /api/admin/** 주소로 강제 진입 시도할 때 작동
                 .exceptionHandling(exception -> exception
                                            .authenticationEntryPoint(( request, response, authException ) -> {
                                                // 로그인로 페이지 리다이렉트

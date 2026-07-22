@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Coffee Bean Admin - 주문 상세</title>
+  <link rel="stylesheet" href="/css/admin-orders.css">
+</head>
+<body>
+<div class="admin-container">
+  <!-- 사이드바 -->
+  <aside class="sidebar">
+    <div class="logo">
+      <h2>☕ Coffee Bean</h2>
+      <span>Admin System</span>
+    </div>
+    <nav class="menu-list">
+      <a href="/admin/orders" class="active">🛍️ 주문 관리</a>
+      <a href="#" onclick="alert('준비 중인 기능입니다.')">📊 매출 통계</a>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="btn-logout" onclick="logout()">🔓 로그아웃</button>
+    </div>
+  </aside>
+
+  <!-- 메인 콘텐츠 영역 -->
+  <main class="main-content">
+    <header class="content-header">
+      <div class="header-flex">
+        <div>
+          <h1>🛍️ 주문 상세 정보</h1>
+          <p>주문자의 상세 정보와 주문 상품 내역을 확인합니다.</p>
+        </div>
+        <button class="btn-outline" onclick="location.href='/admin/orders'">← 목록으로 돌아가기</button>
+      </div>
+    </header>
+
+    <section class="content-body">
+      <!-- 주문 기본 정보 카드 -->
+      <div class="admin-card">
+        <h3 class="card-title">주문 정보</h3>
+        <hr class="divider">
+        <div class="detail-grid">
+          <p><strong>주문 번호:</strong> <span id="detailOrderCode">-</span></p>
+          <p><strong>주문 일시:</strong> <span id="detailOrderedAt">-</span></p>
+          <p><strong>주문 상태:</strong> <span id="detailStatus" class="status-badge">-</span></p>
+          <p><strong>주문자 이메일:</strong> <span id="detailEmail">-</span></p>
+          <p><strong>배송지 주소:</strong> <span id="detailAddress">-</span></p>
+          <p><strong>우편번호:</strong> <span id="detailPostalCode">-</span></p>
+        </div>
+      </div>
+
+      <!-- 주문 상품 내역 카드 -->
+      <div class="admin-card">
+        <h3 class="card-title">주문 상품 내역</h3>
+        <hr class="divider">
+        <table class="menu-table">
+          <thead>
+          <tr>
+            <th>상품 ID</th>
+            <th>상품명</th>
+            <th>단가</th>
+            <th>수량</th>
+            <th>소계</th>
+          </tr>
+          </thead>
+          <tbody id="detailItemTableBody">
+          <!-- JS 동적 렌더링 -->
+          </tbody>
+        </table>
+        <div class="total-price-wrapper">
+          총 결제 금액: <span id="detailTotalPrice">0</span>원
+        </div>
+        <div id="actionButtonContainer"></div>
+      </div>
+    </section>
+  </main>
+</div>
+<script src="/js/admin-order-detail.js"></script>
+</body>
+</html>

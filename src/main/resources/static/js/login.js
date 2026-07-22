@@ -9,7 +9,7 @@ form.addEventListener("submit", async (e) => {
         body: JSON.stringify({username, password})
     });
     if (res.ok) {
-        location.href = "/admin/menu";
+        location.href = "/admin/orders";
     } else {
         document.getElementById("error").innerText = "아이디 또는 비밀번호가 올바르지 않습니다.";
     }
