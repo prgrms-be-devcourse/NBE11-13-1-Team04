@@ -1,11 +1,11 @@
 package com.springbeans.cafemenumanagement.order.controller;
 
-import com.example.demo.dto.request.OrderCreateRequest;
-import com.example.demo.dto.response.OrderCancelResponse;
-import com.example.demo.dto.response.OrderCreateResponse;
-import com.example.demo.dto.response.OrderDetailResponse;
-import com.example.demo.dto.response.OrderSummaryResponse;
-import com.example.demo.service.OrderService;
+import com.springbeans.cafemenumanagement.order.dto.request.OrderCreateRequest;
+import com.springbeans.cafemenumanagement.order.dto.response.OrderCancelResponse;
+import com.springbeans.cafemenumanagement.order.dto.response.OrderCreateResponse;
+import com.springbeans.cafemenumanagement.order.dto.response.OrderDetailResponse;
+import com.springbeans.cafemenumanagement.order.dto.response.OrderSummaryResponse;
+import com.springbeans.cafemenumanagement.order.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +26,7 @@ public class OrderController {
     @ResponseStatus(HttpStatus.CREATED)
     public OrderCreateResponse createOrder(
             @RequestBody OrderCreateRequest request
-    ) {
+                                          ) {
         return orderService.createOrder(request);
     }
 
@@ -44,7 +44,7 @@ public class OrderController {
     @GetMapping("/{orderId}")
     public OrderDetailResponse getOrder(
             @PathVariable Long orderId
-    ) {
+                                       ) {
         return orderService.getOrder(orderId);
     }
 
@@ -54,7 +54,7 @@ public class OrderController {
     @PatchMapping("/{orderId}/cancel")
     public OrderCancelResponse requestCancel(
             @PathVariable Long orderId
-    ) {
+                                            ) {
         return orderService.requestCancel(orderId);
     }
 }

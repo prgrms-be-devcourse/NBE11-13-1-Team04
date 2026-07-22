@@ -14,6 +14,6 @@ public class CartItemResponse {
 
     private int price;
 
-    private int quantity;
+    private int amount;
 
 }

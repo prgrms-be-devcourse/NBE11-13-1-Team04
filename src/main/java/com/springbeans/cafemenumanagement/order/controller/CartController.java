@@ -1,8 +1,8 @@
 package com.springbeans.cafemenumanagement.order.controller;
 
 
-import com.example.demo.dto.request.CartOrderRequest;
-import com.example.demo.service.CartService;
+import com.springbeans.cafemenumanagement.order.dto.request.CartOrderRequest;
+import com.springbeans.cafemenumanagement.order.service.CartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

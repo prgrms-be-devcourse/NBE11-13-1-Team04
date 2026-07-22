@@ -1,8 +1,8 @@
 package com.springbeans.cafemenumanagement.order.repository;
 
-import com.example.demo.entity.Product;
+import com.springbeans.cafemenumanagement.product.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ProductRepository
+public interface OrderProductRepository
         extends JpaRepository<Product, Long> {
 }

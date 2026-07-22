@@ -20,7 +20,7 @@ public record OrderCreateRequest(
 
             Long productId,
 
-            int quantity
+            int amount
 
     ){}
 }

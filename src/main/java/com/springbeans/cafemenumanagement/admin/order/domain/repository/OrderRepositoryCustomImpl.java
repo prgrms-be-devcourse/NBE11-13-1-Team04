@@ -2,9 +2,9 @@ package com.springbeans.cafemenumanagement.admin.order.domain.repository;
 
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.springbeans.cafemenumanagement.admin.order.domain.entity.Order;
-import com.springbeans.cafemenumanagement.admin.order.domain.entity.OrderStatus;
 import com.springbeans.cafemenumanagement.admin.order.dto.AdminOrderSearchCondition;
+import com.springbeans.cafemenumanagement.order.entity.Order;
+import com.springbeans.cafemenumanagement.order.entity.OrderStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -12,9 +12,10 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
-import static com.springbeans.cafemenumanagement.admin.order.domain.entity.QOrder.order;
-import static com.springbeans.cafemenumanagement.admin.order.domain.entity.QOrderProduct.orderProduct;
+import static com.springbeans.cafemenumanagement.order.entity.QOrder.order;
+import static com.springbeans.cafemenumanagement.order.entity.QOrderProduct.orderProduct;
 import static com.springbeans.cafemenumanagement.product.entity.QProduct.product;
+
 
 @Repository
 @RequiredArgsConstructor

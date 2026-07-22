@@ -1,15 +1,18 @@
 package com.springbeans.cafemenumanagement.order.service;
 
-import com.example.demo.dto.request.OrderCreateRequest;
-import com.example.demo.dto.response.OrderCancelResponse;
-import com.example.demo.dto.response.OrderCreateResponse;
-import com.example.demo.dto.response.OrderDetailResponse;
-import com.example.demo.dto.response.OrderSummaryResponse;
-import com.example.demo.entity.Order;
-import com.example.demo.entity.OrderItem;
-import com.example.demo.entity.OrderStatus;
-import com.example.demo.repository.OrderRepository;
+import com.springbeans.cafemenumanagement.order.dto.request.OrderCreateRequest;
+import com.springbeans.cafemenumanagement.order.dto.response.OrderCancelResponse;
+import com.springbeans.cafemenumanagement.order.dto.response.OrderCreateResponse;
+import com.springbeans.cafemenumanagement.order.dto.response.OrderDetailResponse;
+import com.springbeans.cafemenumanagement.order.dto.response.OrderSummaryResponse;
+import com.springbeans.cafemenumanagement.order.entity.Order;
+import com.springbeans.cafemenumanagement.order.entity.OrderProduct;
+import com.springbeans.cafemenumanagement.order.entity.OrderStatus;
+import com.springbeans.cafemenumanagement.order.repository.OrderRepository;
+import com.springbeans.cafemenumanagement.product.entity.Product;
+import com.springbeans.cafemenumanagement.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +26,7 @@ import java.util.List;
 public class OrderService {
 
     private final OrderRepository orderRepository;
+    private final ProductRepository productRepository;
 
     /**
      * 주문 생성
@@ -30,7 +34,7 @@ public class OrderService {
     @Transactional
     public OrderCreateResponse createOrder(
             OrderCreateRequest request
-    ) {
+                                          ) {
 
 
         LocalDateTime start =
@@ -60,27 +64,41 @@ public class OrderService {
                                             request.email(),
                                             request.address(),
                                             request.postalCode()
-                                    );
+                                                );
 
                             return orderRepository.save(newOrder);
                         });
 
 
 
-        request.items()
-                .forEach(item -> {
+//        request.items()
+//                .forEach(item -> {
+//
+//                    OrderProduct orderItem =
+//                            new OrderProduct(
+//                                    item.productId(),
+//                                    item.amount(),
+//                                    order
+//                            );
+//
+//
+//                    order.addItem(orderItem);
+//
+//                });
+        request.items().forEach(item -> {
+            // DB에서 실제 Product 엔티티 조회 (존재하지 않는 상품 예외 처리)
+            Product product = productRepository.findById(item.productId())
+                    .orElseThrow(() -> new ResponseStatusException(
+                            HttpStatus.NOT_FOUND, "존재하지 않는 상품입니다. ID: " + item.productId()));
 
-                    OrderItem orderItem =
-                            new OrderItem(
-                                    item.productId(),
-                                    item.quantity(),
-                                    order
-                            );
+            OrderProduct orderItem = new OrderProduct(
+                    product,
+                    item.amount(),
+                    order
+            );
 
-
-                    order.addItem(orderItem);
-
-                });
+            order.addItem(orderItem);
+        });
 
 
 
@@ -116,7 +134,7 @@ public class OrderService {
     /**
      * 주문 상세 조회
      */
-    public OrderDetailResponse getOrder(Long orderId) {
+    public OrderDetailResponse getOrder( Long orderId ) {
 
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() ->
@@ -136,7 +154,7 @@ public class OrderService {
     /**
      * 주문 취소 요청
      */
-    public OrderCancelResponse requestCancel(Long orderId) {
+    public OrderCancelResponse requestCancel( Long orderId ) {
 
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() ->

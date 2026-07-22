@@ -1,7 +1,7 @@
 package com.springbeans.cafemenumanagement.admin.order.domain.repository;
 
-import com.springbeans.cafemenumanagement.admin.order.domain.entity.Order;
-import com.springbeans.cafemenumanagement.admin.order.domain.entity.OrderStatus;
+import com.springbeans.cafemenumanagement.order.entity.Order;
+import com.springbeans.cafemenumanagement.order.entity.OrderStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-public interface OrderRepository extends JpaRepository<Order, Long>, OrderRepositoryCustom {
+public interface OrderAdminRepository extends JpaRepository<Order, Long>, OrderRepositoryCustom {
     @Query("select o from Order o " +
            "left join fetch o.orderProducts op " +
            "left join fetch op.product " +

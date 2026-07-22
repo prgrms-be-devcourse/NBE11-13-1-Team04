@@ -1,9 +1,9 @@
 package com.springbeans.cafemenumanagement.order.service;
 
 
-import com.example.demo.dto.request.CartOrderRequest;
-import com.example.demo.entity.Product;
-import com.example.demo.repository.ProductRepository;
+import com.springbeans.cafemenumanagement.order.dto.request.CartOrderRequest;
+import com.springbeans.cafemenumanagement.order.repository.OrderProductRepository;
+import com.springbeans.cafemenumanagement.product.entity.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ import org.springframework.web.server.ResponseStatusException;
 public class CartService {
 
 
-    private final ProductRepository productRepository;
+    private final OrderProductRepository orderProductRepository;
 
 
     /**
@@ -29,14 +29,14 @@ public class CartService {
                 .forEach(item -> {
 
                     Product product =
-                            productRepository.findById(item.getProductId())
+                            orderProductRepository.findById(item.getProductId())
                                     .orElseThrow(() ->
                                             new ResponseStatusException(
                                                     HttpStatus.NOT_FOUND,
                                                     "상품이 존재하지 않습니다. (상품ID: " + item.getProductId() + ")"
                                             ));
 
-                    if (product.getStock() < item.getQuantity()) {
+                    if (product.getStock() < item.getAmount()) {
 
                         throw new ResponseStatusException(
                                 HttpStatus.BAD_REQUEST,
@@ -52,7 +52,7 @@ public class CartService {
 
                     System.out.println(
                             "수량 : "
-                                    + item.getQuantity()
+                                    + item.getAmount()
                     );
 
                 });

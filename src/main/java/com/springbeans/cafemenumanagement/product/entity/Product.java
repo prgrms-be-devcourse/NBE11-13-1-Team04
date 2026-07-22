@@ -39,6 +39,8 @@ public class Product {
     @Column
     LocalDateTime updatedAt;
 
+    @Column
+    private int stock;
 
     public void update(String name, Integer price, String category, String filePath, boolean isActive) {
         this.name = name;
@@ -47,5 +49,15 @@ public class Product {
         this.filePath = filePath;
         this.isActive = isActive;
         updatedAt = LocalDateTime.now();
+    }
+
+
+    public void decreaseStock(int quantity) {
+
+        if (this.stock < quantity) {
+            throw new IllegalStateException("재고가 부족합니다.");
+        }
+
+        this.stock -= quantity;
     }
 }

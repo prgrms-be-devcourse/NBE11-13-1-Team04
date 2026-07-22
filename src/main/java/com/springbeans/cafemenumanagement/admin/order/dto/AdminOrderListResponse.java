@@ -1,5 +1,6 @@
 package com.springbeans.cafemenumanagement.admin.order.dto;
-import com.springbeans.cafemenumanagement.admin.order.domain.entity.OrderStatus;
+
+import com.springbeans.cafemenumanagement.order.entity.OrderStatus;
 
 import java.time.LocalDateTime;
 
