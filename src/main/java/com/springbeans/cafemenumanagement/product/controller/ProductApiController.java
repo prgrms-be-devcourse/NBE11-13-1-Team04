@@ -110,7 +110,7 @@ public class ProductApiController {
             @ApiResponse(responseCode = "500", description = "서버 오류")
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProduct(@RequestParam Long id) throws IOException {
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) throws IOException {
         return productService.delete(id);
     }
 }

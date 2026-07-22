@@ -71,8 +71,7 @@ public class ProductService {
 
     @Transactional(readOnly = true)
     public ResponseEntity<List<ProductResponse>> getAll(){
-        List<ProductResponse> products = productRepository.findAll().stream()
-                .sorted(Comparator.comparing(Product::getId))
+        List<ProductResponse> products = productRepository.findByIsActiveTrueOrderById().stream()
                 .map(ProductResponse::from)
                 .toList();
         return ResponseEntity.status(HttpStatus.OK).body(products);

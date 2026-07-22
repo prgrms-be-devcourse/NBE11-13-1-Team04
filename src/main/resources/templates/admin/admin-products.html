@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coffee Bean Admin - Products</title>
+    <link rel="stylesheet" href="/css/admin-menu.css">
+    <link rel="stylesheet" href="/css/admin-products.css">
+</head>
+<body>
+<div class="admin-container">
+    <aside class="sidebar">
+        <div class="logo"><h2>☕ Coffee Bean</h2><span>Admin System</span></div>
+        <nav class="menu-list" aria-label="관리자 메뉴">
+            <a href="/admin/menu">📋 메뉴 관리</a>
+            <a href="/admin/products" class="active" aria-current="page">📦 상품 관리</a>
+            <a href="#" onclick="alert('준비 중인 기능입니다.'); return false;">🛍️ 주문 관리</a>
+            <a href="#" onclick="alert('준비 중인 기능입니다.'); return false;">📊 매출 통계</a>
+        </nav>
+        <div class="sidebar-footer"><button class="btn-logout" type="button" onclick="logout()">🔓 로그아웃</button></div>
+    </aside>
+
+    <main class="main-content">
+        <header class="content-header product-header">
+            <div><h1>📦 상품 관리</h1><p>온라인 판매 상품을 조회하고 등록, 수정, 삭제할 수 있습니다.</p></div>
+            <button class="btn-primary" id="openCreateButton" type="button">✨ 새 상품 등록</button>
+        </header>
+
+        <section class="summary-grid" aria-label="상품 현황">
+            <div class="summary-card"><span>전체 상품</span><strong id="totalCount">-</strong></div>
+            <div class="summary-card"><span>카테고리</span><strong id="categoryCount">-</strong></div>
+            <div class="summary-card"><span>평균 가격</span><strong id="averagePrice">-</strong></div>
+        </section>
+
+        <section class="admin-card">
+            <div class="toolbar">
+                <label class="sr-only" for="searchInput">상품 검색</label>
+                <input id="searchInput" type="search" placeholder="상품명 또는 카테고리 검색">
+                <button class="btn-outline toolbar-button" id="refreshButton" type="button">새로고침</button>
+            </div>
+            <div id="listMessage" class="message" role="status" aria-live="polite"></div>
+            <div class="table-wrap">
+                <table class="menu-table product-table">
+                    <thead><tr><th>ID</th><th>이미지</th><th>카테고리</th><th>상품명</th><th>가격</th><th>관리</th></tr></thead>
+                    <tbody id="productTableBody"><tr><td class="table-state" colspan="6">상품 목록을 불러오는 중입니다.</td></tr></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+</div>
+
+<div class="modal" id="productModal" aria-hidden="true">
+    <div class="modal-backdrop" data-close-modal></div>
+    <section class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="modal-header">
+            <div><h2 id="modalTitle">새 상품 등록</h2><p>상품 정보를 입력해 주세요.</p></div>
+            <button class="modal-close" type="button" data-close-modal aria-label="닫기">×</button>
+        </div>
+        <form id="productForm" enctype="multipart/form-data">
+            <input id="productId" type="hidden">
+            <div id="formMessage" class="message" role="status" aria-live="polite"></div>
+            <div class="form-grid">
+                <div class="form-group full"><label for="name">상품명</label><input id="name" name="name" maxlength="50" placeholder="예: 에티오피아 게이샤 100g" required></div>
+                <div class="form-group"><label for="category">카테고리</label><input id="category" name="category" maxlength="50" placeholder="예: 커피 원두" required></div>
+                <div class="form-group"><label for="price">가격</label><div class="price-input"><input id="price" name="price" type="number" min="0" step="1" placeholder="40000" required><span>원</span></div></div>
+                <div class="form-group full"><label for="image">대표 이미지</label><input id="image" name="image" type="file" accept="image/*"><small id="imageHelp">등록 시 대표 이미지는 필수입니다.</small></div>
+            </div>
+            <div class="modal-actions"><button class="btn-outline" type="button" data-close-modal>취소</button><button class="btn-primary" id="submitButton" type="submit">등록하기</button></div>
+        </form>
+    </section>
+</div>
+<script src="/js/product-list.js"></script>
+</body>
+</html>
