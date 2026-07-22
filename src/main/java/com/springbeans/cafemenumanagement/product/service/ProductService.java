@@ -56,6 +56,7 @@ public class ProductService {
                  .filePath(PRODUCT_IMAGE_URL + fileName)
                  .createdAt(LocalDateTime.now())
                  .updatedAt(LocalDateTime.now())
+                 .stock(req.stock())
                  .build());
 
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -112,7 +113,8 @@ public class ProductService {
                 req.price(),
                 req.category(),
                 filePath,
-                product.isActive()
+                product.isActive(),
+                req.stock()
         );
 
         return ResponseEntity.status(HttpStatus.OK).body(ProductSaveResponse.from(product));
@@ -131,7 +133,8 @@ public class ProductService {
                 product.getPrice(),
                 product.getCategory(),
                 product.getFilePath(),
-                false
+                false,
+                product.getStock()
         );
 
         return ResponseEntity.noContent().build();

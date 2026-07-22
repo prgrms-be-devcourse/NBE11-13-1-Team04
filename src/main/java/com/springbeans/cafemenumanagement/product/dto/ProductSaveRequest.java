@@ -26,6 +26,11 @@ public record ProductSaveRequest(
 
         @Schema(description = "상품 대표 이미지", type = "string", format = "binary")
         @NotNull(message = "상품 이미지는 필수입니다.")
-        MultipartFile image
+        MultipartFile image,
+
+        @Schema(description = "상품 수량", example = "1")
+        @NotBlank(message = "상품 재고 수량을 입력해주세요.")
+        @Min(value = 0, message = "재고는 0개 이상이어야 합니다.")
+        int stock
 ){
 }

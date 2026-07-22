@@ -42,13 +42,14 @@ public class Product {
     @Column
     private int stock;
 
-    public void update(String name, Integer price, String category, String filePath, boolean isActive) {
+    public void update(String name, Integer price, String category, String filePath, boolean isActive, int stock) {
         this.name = name;
         this.price = price;
         this.category = category;
         this.filePath = filePath;
         this.isActive = isActive;
         updatedAt = LocalDateTime.now();
+        this.stock = stock;
     }
 
 

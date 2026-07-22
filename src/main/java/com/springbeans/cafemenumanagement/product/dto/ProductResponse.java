@@ -2,6 +2,8 @@ package com.springbeans.cafemenumanagement.product.dto;
 
 import com.springbeans.cafemenumanagement.product.entity.Product;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 
 public record ProductResponse(
 
@@ -18,7 +20,10 @@ public record ProductResponse(
         String category,
 
         @Schema(description = "상품 이미지 정적 리소스 경로", example = "c83b04fd-8f41-4163-a593-ff9604e7861f.jpg")
-        String filePath
+        String filePath,
+
+        @Schema(description = "상품 수량", example = "1")
+        int stock
 ) {
     public static ProductResponse from(Product product) {
         return new ProductResponse(
@@ -26,7 +31,8 @@ public record ProductResponse(
                 product.getName(),
                 product.getPrice(),
                 product.getCategory(),
-                product.getFilePath()
+                product.getFilePath(),
+                product.getStock()
         );
     }
 }
