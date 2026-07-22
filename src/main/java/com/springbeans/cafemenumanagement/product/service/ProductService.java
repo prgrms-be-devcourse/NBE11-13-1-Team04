@@ -1,5 +1,6 @@
 package com.springbeans.cafemenumanagement.product.service;
 
+import com.springbeans.cafemenumanagement.global.utils.Utils;
 import com.springbeans.cafemenumanagement.product.dto.ProductSaveRequest;
 import com.springbeans.cafemenumanagement.product.dto.ProductResponse;
 import com.springbeans.cafemenumanagement.product.dto.ProductSaveResponse;
@@ -36,7 +37,7 @@ public class ProductService {
     public ResponseEntity<ProductSaveResponse> save(ProductSaveRequest req) throws IOException {
         Files.createDirectories(PRODUCT_IMAGE_ROOT);
 
-        String fileName = UUID.randomUUID() + getExtension(req.image().getOriginalFilename());
+        String fileName = UUID.randomUUID() + Utils.getExtension(req.image().getOriginalFilename());
         Path savePath = PRODUCT_IMAGE_ROOT
                 .resolve(fileName)
                 .normalize();
@@ -97,7 +98,7 @@ public class ProductService {
 
         String filePath = product.getFilePath();
         if (req.image() != null && !req.image().isEmpty()) {
-            String fileName = UUID.randomUUID() + getExtension(req.image().getOriginalFilename());
+            String fileName = UUID.randomUUID() + Utils.getExtension(req.image().getOriginalFilename());
             Path newPath = PRODUCT_IMAGE_ROOT
                     .resolve(fileName)
                     .normalize();
@@ -134,14 +135,5 @@ public class ProductService {
         );
 
         return ResponseEntity.noContent().build();
-    }
-
-    // 원본 파일의 확장자만 분리하는 메서드 (coffee.jpg -> .jpg)
-    private String getExtension(String originalFilename){
-        if (originalFilename == null || originalFilename.isBlank()) throw new IllegalArgumentException("파일명이 존재하지 않습니다.");
-        String fileName = Paths.get(originalFilename).getFileName().toString();
-        int dotIndex = fileName.lastIndexOf('.');
-        if (dotIndex == -1) throw new IllegalArgumentException("파일 확장자가 존재하지 않습니다.");
-        return fileName.substring(dotIndex).toLowerCase();
     }
 }
