@@ -307,7 +307,7 @@ class ProductServiceTest {
                     true
             );
 
-            given(productRepository.findByIsActiveTrueOrderById())
+            given(productRepository.findByIsActiveTrue())
                     .willReturn(
                             List.of(
                                     firstProduct,
@@ -343,14 +343,14 @@ class ProductServiceTest {
 
             then(productRepository)
                     .should()
-                    .findByIsActiveTrueOrderById();
+                    .findByIsActiveTrue();
         }
 
         @Test
         @DisplayName("활성화된 상품이 없으면 빈 목록을 반환한다")
         void getAllReturnsEmptyList() {
             // given
-            given(productRepository.findByIsActiveTrueOrderById())
+            given(productRepository.findByIsActiveTrue())
                     .willReturn(List.of());
 
             // when
@@ -367,7 +367,7 @@ class ProductServiceTest {
 
             then(productRepository)
                     .should()
-                    .findByIsActiveTrueOrderById();
+                    .findByIsActiveTrue();
         }
     }
 
@@ -397,7 +397,7 @@ class ProductServiceTest {
                     true
             );
 
-            given(productRepository.findByCategoryOrderById("커피"))
+            given(productRepository.findByCategory("커피"))
                     .willReturn(
                             List.of(
                                     secondProduct,
@@ -426,14 +426,14 @@ class ProductServiceTest {
 
             then(productRepository)
                     .should()
-                    .findByCategoryOrderById("커피");
+                    .findByCategory("커피");
         }
 
         @Test
         @DisplayName("카테고리에 해당하는 상품이 없으면 빈 목록을 반환한다")
         void getByCategoryReturnsEmptyList() {
             // given
-            given(productRepository.findByCategoryOrderById("디저트"))
+            given(productRepository.findByCategory("디저트"))
                     .willReturn(List.of());
 
             // when
@@ -450,7 +450,7 @@ class ProductServiceTest {
 
             then(productRepository)
                     .should()
-                    .findByCategoryOrderById("디저트");
+                    .findByCategory("디저트");
         }
 
         @Test
@@ -465,7 +465,7 @@ class ProductServiceTest {
 
             then(productRepository)
                     .should(never())
-                    .findByCategoryOrderById(anyString());
+                    .findByCategory(anyString());
         }
 
         @Test
@@ -480,7 +480,7 @@ class ProductServiceTest {
 
             then(productRepository)
                     .should(never())
-                    .findByCategoryOrderById(anyString());
+                    .findByCategory(anyString());
         }
     }
 
