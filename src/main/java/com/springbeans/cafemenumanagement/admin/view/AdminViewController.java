@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/admin")
 public class AdminViewController {
 
-
     // 로그인 페이지
     @GetMapping("/login")
     public String loginPage() {
@@ -30,7 +29,13 @@ public class AdminViewController {
 
     // 주문 상세 페이지
     @GetMapping("/orders/{orderId}")
-    public String orderDetailPage(@PathVariable Long orderId ) {
+    public String orderDetailPage(@PathVariable Long orderId) {
         return "admin/admin-order-detail";
+    }
+
+    // 상품 관리 페이지 (추가)
+    @GetMapping("/products")
+    public String productListPage() {
+        return "admin/admin-products";
     }
 }

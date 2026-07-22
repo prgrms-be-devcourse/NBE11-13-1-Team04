@@ -1,0 +1,366 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Pretendard, sans-serif;
+}
+
+body {
+    background: #f8f9fa;
+    color: #333;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.admin-container {
+    display: flex;
+    height: 100vh;
+    width: 100%;
+}
+
+/* 사이드바 */
+.sidebar {
+    width: 260px;
+    background: #5d4037;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 30px 20px;
+}
+
+.sidebar .logo {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.sidebar .logo h2 {
+    font-size: 22px;
+    color: #fff;
+}
+
+.sidebar .logo span {
+    font-size: 12px;
+    color: #d7ccc8;
+    letter-spacing: 1px;
+}
+
+.menu-list {
+    flex: 1;
+}
+
+.menu-list a {
+    display: block;
+    color: #d7ccc8;
+    text-decoration: none;
+    padding: 14px 18px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    font-size: 15px;
+    transition: all 0.2s;
+}
+
+.menu-list a:hover, .menu-list a.active {
+    background: #6f4e37;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.sidebar-footer {
+    border-top: 1px solid #795548;
+    padding-top: 20px;
+}
+
+.btn-logout {
+    width: 100%;
+    padding: 12px;
+    background: transparent;
+    border: 1px solid #bcaaa4;
+    color: #bcaaa4;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.btn-logout:hover {
+    background: #c62828;
+    color: white;
+    border-color: #c62828;
+}
+
+/* 메인 콘텐츠 */
+.main-content {
+    flex: 1;
+    padding: 40px;
+    overflow-y: auto;
+}
+
+.content-header {
+    margin-bottom: 30px;
+}
+
+.content-header h1 {
+    color: #5d4037;
+    font-size: 28px;
+    margin-bottom: 5px;
+}
+
+.content-header p {
+    color: #777;
+    font-size: 14px;
+}
+
+.header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* 어드민 카드 */
+.admin-card {
+    background: white;
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, .04);
+    margin-bottom: 20px;
+}
+
+.card-title {
+    font-size: 18px;
+    color: #5d4037;
+}
+
+.divider {
+    margin: 15px 0;
+    border: 0;
+    border-top: 1px solid #eee;
+}
+
+/* 버튼 스타일 */
+.btn-primary {
+    background: #6f4e37;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.btn-primary:hover {
+    background: #5d4037;
+}
+
+.btn-outline {
+    background: white;
+    border: 1px solid #ddd;
+    color: #666;
+    padding: 9px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.btn-outline:hover {
+    background: #f5f5f5;
+    color: #333;
+}
+
+.btn-sm {
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+    margin-right: 4px;
+    border: 1px solid transparent;
+}
+
+.btn-danger {
+    background: #ffebee;
+    color: #c62828;
+    border: 1px solid #ffcdd2;
+}
+
+.btn-danger:hover {
+    background: #c62828;
+    color: white;
+}
+
+/* 필터 폼 */
+.filter-form {
+    display: flex;
+    gap: 20px;
+    align-items: flex-end;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.filter-group label {
+    font-size: 13px;
+    color: #5d4037;
+    font-weight: 600;
+}
+
+.filter-group input {
+    padding: 9px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    outline: none;
+}
+
+.filter-group input:focus {
+    border-color: #6f4e37;
+}
+
+.filter-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+/* 데이터 테이블 */
+.menu-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.menu-table th, .menu-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid #eeeeee;
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+.menu-table th {
+    background: #faf8f7;
+    color: #5d4037;
+    font-weight: 600;
+}
+
+.product-img-thumb {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid #eee;
+}
+
+.badge {
+    background: #efebe9;
+    color: #5d4037;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* 모달 */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal-card {
+    background: white;
+    width: 480px;
+    max-width: 90%;
+    padding: 28px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btn-close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #999;
+    cursor: pointer;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    font-size: 13px;
+    color: #5d4037;
+    font-weight: 600;
+}
+
+.form-group input {
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    outline: none;
+}
+
+.form-group input:focus {
+    border-color: #6f4e37;
+}
+
+.form-row {
+    display: flex;
+    gap: 12px;
+}
+
+.form-row .form-group {
+    flex: 1;
+}
+
+.required {
+    color: #c62828;
+}
+
+.image-preview-box {
+    margin-top: 8px;
+    width: 100%;
+    height: 120px;
+    border-radius: 6px;
+    border: 1px dashed #ddd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: #fafafa;
+}
+
+.image-preview-box img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 24px;
+}
