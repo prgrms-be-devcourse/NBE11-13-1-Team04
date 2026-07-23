@@ -1,5 +1,41 @@
 spring:
-  application:
-    name: Cafe Menu Management
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # ⚠️ localhost:3306/ 뒤에 방금 만든 이름 'cafe-db'가 정확히 들어가 있어야 합니다.
+    url: jdbc:mysql://localhost:3306/cafe-db?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: root
+    password: 20202020 # 본인 MySQL 비밀번호
+
+  jpa:
+    hibernate:
+      ddl-auto: update # 스프링이 켜지면서 테이블을 자동으로 만들어주는 옵션
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    spring:
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    protocol: smtp
+    properties:
+      "[mail.smtp.auth]": true
+      "[mail.smtp.starttls.enable]": true
+      "[mail.smtp.starttls.required]": true
+      "[mail.debug]": true
 file:
   upload-dir: ./uploads/products
+
+logging:
+  level:
+    com:
+      example:
+        product:
+            DEBUG
+  slack:
+    webhook:
+      url: ${SLACK_WEBHOOK_URL}

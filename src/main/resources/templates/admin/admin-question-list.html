@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coffee Bean Admin - 문의 관리</title>
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="/css/admin-style.css">
+</head>
+<body>
+<div class="admin-layout">
+    <!-- Admin Sidebar -->
+    <aside class="admin-sidebar">
+        <div class="sidebar-brand">☕ Coffee Bean Admin</div>
+        <nav class="sidebar-nav">
+            <a href="/admin/products">상품 관리</a>
+            <a href="/admin/orders">주문 관리</a>
+            <a href="/admin/sales">매출 및 통계</a>
+            <a href="/admin/questions" class="active">1:1 문의 관리</a>
+        </nav>
+        <div class="sidebar-footer" style="padding: 20px;">
+            <button class="btn-logout" onclick="logout()">로그아웃</button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+        <div class="admin-header">
+            <h2>💬 1:1 문의 관리</h2>
+            <p>고객 문의 내역을 조회하고 답변을 등록/관리합니다.</p>
+        </div>
+
+        <section class="admin-card">
+            <div class="card-header-flex">
+                <h3 class="card-title">전체 문의 목록</h3>
+                <div class="filter-group-inline">
+                    <select id="statusFilter" class="form-select" onchange="filterQuestions()">
+                        <option value="ALL">전체 상태</option>
+                        <option value="WAITING">답변 대기</option>
+                        <option value="ANSWERED">답변 완료</option>
+                    </select>
+                </div>
+            </div>
+
+            <table class="admin-table">
+                <thead>
+                <tr>
+                    <th style="width: 80px;">ID</th>
+                    <th style="width: 220px;">작성자 (이메일)</th>
+                    <th>제목</th>
+                    <th style="width: 120px;">답변 상태</th>
+                    <th style="width: 160px;">작성일시</th>
+                    <th style="width: 100px;">관리</th>
+                </tr>
+                </thead>
+                <tbody id="adminQuestionTableBody">
+                <tr>
+                    <td colspan="6" class="empty-msg">문의 내역을 불러오는 중입니다...</td>
+                </tr>
+                </tbody>
+            </table>
+        </section>
+    </main>
+</div>
+
+<script src="/js/admin-question-list.js"></script>
+</body>
+</html>

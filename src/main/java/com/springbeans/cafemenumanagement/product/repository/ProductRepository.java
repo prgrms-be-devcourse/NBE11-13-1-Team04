@@ -6,5 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
-    List<Product> findByCategoryOrderById(String category);
+    List<Product> findByCategoryAndIsActiveTrue(String category);
+    List<Product> findByIsActiveTrue();
 }

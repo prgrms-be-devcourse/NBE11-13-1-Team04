@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coffee Bean - 주문하기</title>
+    <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="/css/user-style.css">
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+</head>
+<body>
+<div class="user-layout">
+    <!-- Header -->
+    <header class="user-header">
+        <div class="header-container">
+            <a href="/" class="brand-logo">☕ Coffee Bean</a>
+            <nav class="user-nav">
+                <a href="/" class="active">상품 주문</a>
+                <a href="/orders" >주문 내역</a>
+                <a href="/questions/new" >1:1 문의하기</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="user-main">
+        <div class="page-header">
+            <h2>☕ 상품 주문하기</h2>
+            <p>원하는 상품을 장바구니에 담고 주문을 완료해 보세요.</p>
+        </div>
+
+        <div class="order-grid">
+            <!-- Left: Product List -->
+            <section class="user-card">
+                <h3 class="card-title">상품 목록</h3>
+                <div id="productList" class="product-grid">
+                    <!-- Dynamic rendering via JS -->
+                </div>
+            </section>
+
+            <!-- Right: Cart & Checkout Form -->
+            <section class="user-card">
+                <h3 class="card-title">🛒 장바구니 & 주문 정보</h3>
+
+                <!-- Cart Items Table -->
+                <table class="cart-table">
+                    <thead>
+                    <tr>
+                        <th>상품명</th>
+                        <th>수량</th>
+                        <th>금액</th>
+                        <th>삭제</th>
+                    </tr>
+                    </thead>
+                    <tbody id="cartTableBody">
+                    <!-- Dynamic rendering -->
+                    </tbody>
+                </table>
+
+                <div class="cart-summary">
+                    <span>총 결제금액</span>
+                    <strong id="totalPrice">0원</strong>
+                </div>
+
+                <hr class="divider">
+
+                <!-- Order Form -->
+                <form id="orderForm" onsubmit="handleOrderSubmit(event)">
+                    <div class="form-group">
+                        <label for="email">이메일 <span class="required">*</span></label>
+                        <input type="email" id="email" required placeholder="example@email.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="postalCode">우편번호 <span class="required">*</span></label>
+                        <div class="postal-search-row">
+                            <input type="text" id="postalCode" required readonly placeholder="주소 검색 버튼을 눌러주세요">
+                            <button type="button" class="btn-outline btn-sm" onclick="execDaumPostcode()">주소 검색</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address">주소 <span class="required">*</span></label>
+                        <input type="text" id="address" required readonly placeholder="주소 검색 버튼을 눌러주세요">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="detailAddress">상세 주소</label>
+                        <input type="text" id="detailAddress" placeholder="동/호수, 건물명 등 (선택)">
+                    </div>
+
+                    <div class="button-group">
+                        <button type="submit" class="btn-primary btn-block">주문하기</button>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </main>
+</div>
+
+<script src="/js/order-create.js"></script>
+</body>
+</html>

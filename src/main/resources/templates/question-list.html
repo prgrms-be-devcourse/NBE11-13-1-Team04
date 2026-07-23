@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coffee Bean - 문의 목록</title>
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="/css/user-style.css">
+</head>
+<body>
+<div class="user-layout">
+  <header class="user-header">
+    <div class="header-container">
+      <a href="/" class="brand-logo">☕ Coffee Bean</a>
+      <nav class="user-nav">
+        <a href="/">상품 주문</a>
+        <a href="/orders" >주문 내역</a>
+        <a href="/questions/new" class="active">1:1 문의하기</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="user-main">
+    <div class="page-header">
+      <h2>📋 내 문의 내역</h2>
+      <p>등록 시 작성하셨던 이메일을 입력하시면 문의 내역을 확인하실 수 있습니다.</p>
+    </div>
+
+    <!-- 이메일 검색 카드 -->
+    <section class="user-card">
+      <form id="searchForm" class="filter-form" onsubmit="searchQuestions(event)">
+        <div class="filter-group flex-fill">
+          <label for="searchEmail">이메일 확인 <span class="required">*</span></label>
+          <input type="email" id="searchEmail" placeholder="등록한 이메일을 입력하세요" required>
+        </div>
+        <div class="filter-buttons">
+          <button type="submit" class="btn-primary">조회하기</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- 문의 목록 카드 -->
+    <section class="user-card">
+      <div class="card-header-flex">
+        <h3 class="card-title">문의 리스트</h3>
+        <button class="btn-primary btn-sm" onclick="location.href='/questions/new'">+ 새 문의하기</button>
+      </div>
+      <table class="data-table">
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>제목</th>
+          <th>답변 상태</th>
+          <th>작성일</th>
+          <th>상세</th>
+        </tr>
+        </thead>
+        <tbody id="questionTableBody">
+        <tr>
+          <td colspan="5" class="empty-msg">이메일을 입력하고 조회 버튼을 눌러주세요.</td>
+        </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+</div>
+
+<script src="/js/question-list.js"></script>
+</body>
+</html>

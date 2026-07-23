@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Coffee Bean Admin - 매출 및 통계</title>
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" href="/css/admin-style.css">
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<div class="admin-layout">
+  <!-- Admin Sidebar -->
+  <aside class="admin-sidebar">
+    <div class="sidebar-brand">☕ Coffee Bean Admin</div>
+    <nav class="sidebar-nav">
+      <a href="/admin/products">상품 관리</a>
+      <a href="/admin/orders">주문 관리</a>
+      <a href="/admin/sales" class="active">매출 및 통계</a>
+      <a href="/admin/questions">1:1 문의 관리</a>
+    </nav>
+    <div class="sidebar-footer" style="padding: 20px;">
+      <button class="btn-logout" onclick="logout()">로그아웃</button>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="admin-main">
+    <div class="admin-header">
+      <h2>📊 매출 및 판매 통계</h2>
+      <p>카페의 월별/일별 매출 현황 및 인기 상품 판매 통계를 확인할 수 있습니다.</p>
+    </div>
+
+    <!-- 연월 검색 필터 카드 -->
+    <section class="admin-card">
+      <form id="salesSearchForm" onsubmit="handleSalesSearch(event)" style="display: flex; gap: 12px; align-items: flex-end;">
+        <div class="form-group" style="margin-bottom: 0; width: 150px;">
+          <label for="yearSelect" class="detail-label">조회 연도</label>
+          <select id="yearSelect" class="form-select" style="width: 100%;"></select>
+        </div>
+        <div class="form-group" style="margin-bottom: 0; width: 150px;">
+          <label for="monthSelect" class="detail-label">조회 월</label>
+          <select id="monthSelect" class="form-select" style="width: 100%;"></select>
+        </div>
+        <div class="button-group">
+          <button type="submit" class="btn-primary">조회</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- 요약 카드 (Summary Cards) -->
+    <div class="stat-card-grid">
+      <div class="stat-card">
+        <span class="stat-label">이번 달 누적 매출액</span>
+        <div class="stat-value" id="statMonthPrice">0 원</div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">이번 달 누적 판매량</span>
+        <div class="stat-value" id="statMonthCount">0 개</div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">오늘 매출액</span>
+        <div class="stat-value highlight" id="statTodayPrice">0 원</div>
+      </div>
+      <div class="stat-card">
+        <span class="stat-label">오늘 판매량</span>
+        <div class="stat-value highlight" id="statTodayCount">0 개</div>
+      </div>
+    </div>
+
+    <!-- 차트 영역 1: 일별 매출/수량 추이 -->
+    <section class="admin-card">
+      <div class="card-header-flex">
+        <h3 class="card-title">📈 일별 매출 및 판매 수량 추이</h3>
+      </div>
+      <div class="chart-container-lg">
+        <canvas id="dailyChart"></canvas>
+      </div>
+    </section>
+
+    <!-- 차트 영역 2: 월별 매출 및 TOP 5 상품 -->
+    <div class="chart-grid-two">
+      <section class="admin-card">
+        <div class="card-header-flex">
+          <h3 class="card-title">📅 월별 누적 매출 추이</h3>
+        </div>
+        <div class="chart-container-sm">
+          <canvas id="monthlyChart"></canvas>
+        </div>
+      </section>
+
+      <section class="admin-card">
+        <div class="card-header-flex">
+          <h3 class="card-title">☕ 인기 상품 TOP 5 (판매량 기준)</h3>
+        </div>
+        <div class="chart-container-sm">
+          <canvas id="topProductChart"></canvas>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+
+<script src="/js/admin-sales.js"></script>
+</body>
+</html>

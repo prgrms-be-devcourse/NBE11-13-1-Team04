@@ -1,0 +1,546 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+}
+
+body {
+    background: #f8f9fa;
+    color: #333;
+    min-height: 100vh;
+}
+
+.user-layout {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Header */
+.user-header {
+    background: #5d4037;
+    color: white;
+    padding: 0 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.brand-logo {
+    color: #fff;
+    font-size: 20px;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.user-nav {
+    display: flex;
+    gap: 12px;
+}
+
+.user-nav a {
+    color: #d7ccc8;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.user-nav a:hover, .user-nav a.active {
+    background: #6f4e37;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+/* Main Container */
+.user-main {
+    max-width: 1200px;
+    width: 100%;
+    margin: 30px auto;
+    padding: 0 20px;
+    flex: 1;
+}
+
+.page-header {
+    margin-bottom: 24px;
+}
+
+.page-header h2 {
+    color: #5d4037;
+    font-size: 24px;
+    margin-bottom: 4px;
+}
+
+.page-header p {
+    color: #777;
+    font-size: 14px;
+}
+
+/* Card Component */
+.user-card {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+    margin-bottom: 20px;
+}
+
+.card-title {
+    font-size: 18px;
+    color: #5d4037;
+    margin-bottom: 16px;
+}
+
+.divider {
+    margin: 20px 0;
+    border: 0;
+    border-top: 1px solid #eee;
+}
+
+/* Layout Grid */
+.order-grid {
+    display: grid;
+    grid-template-columns: 1fr 460px;
+    gap: 20px;
+}
+
+@media (max-width: 900px) {
+    .order-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Products Grid */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+}
+
+.product-item-card {
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.2s;
+}
+
+.product-item-card:hover {
+    transform: translateY(-2px);
+}
+
+.product-item-card img {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-bottom: 8px;
+}
+
+.product-item-card .name {
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 4px;
+    text-align: center;
+}
+
+.product-item-card .price {
+    color: #6f4e37;
+    font-weight: 700;
+    font-size: 15px;
+    margin-bottom: 8px;
+}
+
+/* Table Styles */
+.cart-table, .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.cart-table th, .cart-table td,
+.data-table th, .data-table td {
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+    text-align: left;
+}
+
+.cart-table th, .data-table th {
+    background: #faf8f7;
+    color: #5d4037;
+}
+
+.cart-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 16px;
+    font-size: 16px;
+}
+
+.cart-summary strong {
+    color: #6f4e37;
+    font-size: 20px;
+}
+
+/* Form Controls */
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 14px;
+}
+
+.form-group label {
+    font-size: 13px;
+    color: #5d4037;
+    font-weight: 600;
+}
+
+.form-group input {
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    outline: none;
+}
+
+.form-group input:focus {
+    border-color: #6f4e37;
+}
+
+.required {
+    color: #c62828;
+}
+
+/* Buttons */
+.btn-primary {
+    background: #6f4e37;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.btn-primary:hover {
+    background: #5d4037;
+}
+
+.btn-outline {
+    background: white;
+    border: 1px solid #ddd;
+    color: #666;
+    padding: 9px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.btn-outline:hover {
+    background: #f5f5f5;
+}
+
+.btn-danger {
+    background: #ffebee;
+    color: #c62828;
+    border: 1px solid #ffcdd2;
+    padding: 9px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn-danger:hover {
+    background: #c62828;
+    color: white;
+}
+
+.btn-sm {
+    padding: 4px 8px;
+    font-size: 12px;
+}
+
+.btn-block {
+    width: 100%;
+}
+
+.button-group {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+/* Detail View Grid */
+.detail-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.detail-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.detail-item .label {
+    font-size: 12px;
+    color: #888;
+}
+
+.detail-item .value {
+    font-weight: 600;
+    color: #333;
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.badge {
+    display: inline-block;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.badge-ordered { background: #e3f2fd; color: #1565c0; }
+.badge-confirmed { background: #e8f5e9; color: #2e7d32; }
+.badge-cancel-requested { background: #fff3e0; color: #e65100; }
+.badge-canceled { background: #ffebee; color: #c62828; }
+
+/* 문의하기 전용 추가 스타일 */
+.max-width-card {
+    max-width: 720px;
+    margin: 0 auto;
+}
+
+.form-textarea {
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+    outline: none;
+    resize: vertical;
+}
+
+.form-textarea:focus {
+    border-color: #6f4e37;
+}
+
+.form-help {
+    font-size: 12px;
+    color: #888;
+    margin-top: 2px;
+}
+
+.right-align {
+    justify-content: flex-end;
+}
+
+.flex-fill {
+    flex: 1;
+}
+
+.card-header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.empty-msg {
+    text-align: center;
+    color: #888;
+    padding: 24px !important;
+}
+
+/* 질문 및 답변 상세보기 스타일 */
+.question-header {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.question-title-text {
+    font-size: 20px;
+    color: #5d4037;
+}
+
+.date-text {
+    font-size: 12px;
+    color: #999;
+}
+
+.body-text {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #444;
+    white-space: pre-wrap;
+    margin-top: 8px;
+}
+
+.answer-box {
+    margin-top: 20px;
+    background: #faf8f7;
+    padding: 16px;
+    border-radius: 8px;
+    border-left: 4px solid #6f4e37;
+}
+
+.answer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.answer-header h4 {
+    color: #5d4037;
+}
+
+.margin-top-20 {
+    margin-top: 20px;
+}
+
+.badge-waiting {
+    background: #fff3e0;
+    color: #e65100;
+}
+
+.badge-answered {
+    background: #e8f5e9;
+    color: #2e7d32;
+}
+
+/* ==========================================================================
+   2. 카드 및 컨테이너 스타일
+   ========================================================================== */
+.user-card {
+    background-color: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.max-width-card {
+    max-width: 720px;
+    margin: 0 auto 24px auto;
+}
+
+.card-header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.card-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333333;
+}
+
+/* ==========================================================================
+   3. 폼(Form) & 입력 필드 스타일 (검색 폼 및 입력창 복구)
+   ========================================================================== */
+.filter-form {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 20px;
+}
+
+.flex-fill {
+    flex: 1;
+}
+
+label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #495057;
+}
+
+.required {
+    color: #e53935;
+}
+
+/* Input & Textarea 공통 스타일 */
+input[type="text"],
+input[type="email"],
+.form-textarea {
+    width: 100%;
+    padding: 10px 14px;
+    font-size: 14px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    background-color: #ffffff;
+    color: #333333;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    outline: none;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+.form-textarea:focus {
+    border-color: #6f4e37;
+    box-shadow: 0 0 0 3px rgba(111, 78, 55, 0.15);
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.form-help {
+    font-size: 12px;
+    color: #868e96;
+    margin-top: 2px;
+}
+.product-item-card .stock {
+    font-size: 0.85rem;
+    color: #666;
+    margin-bottom: 8px;
+}
+
+/* 품절 시 강조 스타일 */
+.product-item-card .stock.out-of-stock {
+    color: #e53e3e;
+    font-weight: bold;
+}
+
+/* 비활성화된 버튼 스타일 */
+button:disabled {
+    background-color: #ccc !important;
+    cursor: not-allowed;
+    border-color: #ccc !important;
+}
