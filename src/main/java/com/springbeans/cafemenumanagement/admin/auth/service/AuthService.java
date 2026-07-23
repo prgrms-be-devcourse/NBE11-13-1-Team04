@@ -4,7 +4,9 @@ import com.springbeans.cafemenumanagement.admin.auth.domain.entity.Admin;
 import com.springbeans.cafemenumanagement.admin.auth.domain.repository.AdminRepository;
 import com.springbeans.cafemenumanagement.admin.auth.dto.LoginRequest;
 import com.springbeans.cafemenumanagement.admin.auth.dto.LoginResponse;
+import com.springbeans.cafemenumanagement.admin.auth.exception.AuthErrorCode;
 import com.springbeans.cafemenumanagement.global.constant.RoleConst;
+import com.springbeans.cafemenumanagement.global.exception.BusinessException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -28,10 +30,10 @@ public class AuthService {
 
     public LoginResponse login(LoginRequest request, HttpServletRequest httpRequest) {
         Admin admin = adminRepository.findByUsername(request.username())
-                .orElseThrow(() -> new IllegalArgumentException("아이디 또는 비밀번호가 일치하지 않습니다."));
+                .orElseThrow(() -> new BusinessException(AuthErrorCode.INVALID_CREDENTIALS));;
 
         if (!passwordEncoder.matches(request.password(), admin.getPassword())) {
-            throw new IllegalArgumentException("아이디 또는 비밀번호가 일치하지 않습니다.");
+            throw new BusinessException(AuthErrorCode.INVALID_CREDENTIALS);
         }
 
         // 시큐리티 전용 인증 토큰 생성

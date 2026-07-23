@@ -1,12 +1,14 @@
 package com.springbeans.cafemenumanagement.order.service;
 
-import com.springbeans.cafemenumanagement.order.dto.response.AdminOrderDetailResponse;
-import com.springbeans.cafemenumanagement.order.dto.response.AdminOrderListResponse;
-import com.springbeans.cafemenumanagement.order.dto.request.AdminOrderSearchCondition;
+import com.springbeans.cafemenumanagement.global.exception.BusinessException;
 import com.springbeans.cafemenumanagement.order.domain.entity.Order;
 import com.springbeans.cafemenumanagement.order.domain.entity.OrderProduct;
 import com.springbeans.cafemenumanagement.order.domain.entity.OrderStatus;
 import com.springbeans.cafemenumanagement.order.domain.repository.OrderRepository;
+import com.springbeans.cafemenumanagement.order.dto.request.AdminOrderSearchCondition;
+import com.springbeans.cafemenumanagement.order.dto.response.AdminOrderDetailResponse;
+import com.springbeans.cafemenumanagement.order.dto.response.AdminOrderListResponse;
+import com.springbeans.cafemenumanagement.order.exception.OrderErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,11 +31,10 @@ public class AdminOrderService {
 
     public AdminOrderDetailResponse getOrderDetail( Long orderId ) {
         Order order = orderRepository.findByIdWithProducts(orderId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 주문입니다. ID: " + orderId));
+                .orElseThrow(() -> new BusinessException(OrderErrorCode.ORDER_NOT_FOUND));
 
         return convertToAdminOrderDetailResponse(order);
     }
-
 
     private AdminOrderListResponse convertToAdminOrderListResponse( Order order ) {
         List<OrderProduct> orderProducts = order.getOrderProducts() != null ? order.getOrderProducts() : List.of();
@@ -102,19 +103,19 @@ public class AdminOrderService {
     @Transactional
     public void approveCancelOrder( Long orderId ) {
         Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 주문입니다. id: " + orderId));
+                .orElseThrow(() -> new BusinessException(OrderErrorCode.ORDER_NOT_FOUND));
 
         if (order.getStatus() != OrderStatus.CANCEL_REQUESTED) {
-            throw new IllegalArgumentException("취소 요청 상태의 주문만 승인할 수 있습니다.");
+            throw new BusinessException(OrderErrorCode.INVALID_CANCEL_REQUEST_STATUS);
         }
 
         order.cancel();
     }
 
     @Transactional
-    public void rejectCancelOrder(Long orderId) {
+    public void rejectCancelOrder( Long orderId ) {
         Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 주문입니다. ID: " + orderId));
+                .orElseThrow(() -> new BusinessException(OrderErrorCode.ORDER_NOT_FOUND));
 
         order.rejectCancel();
     }
@@ -122,13 +123,12 @@ public class AdminOrderService {
     @Transactional
     public void cancelOrder( Long orderId ) {
         Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 주문입니다. ID: " + orderId));
+                .orElseThrow(() -> new BusinessException(OrderErrorCode.ORDER_NOT_FOUND));
 
         if (order.getStatus() == OrderStatus.CONFIRMED) {
-            throw new IllegalArgumentException("확정된 주문은 취소할 수 없습니다.");
+            throw new BusinessException(OrderErrorCode.CANNOT_CANCEL_CONFIRMED_ORDER);
         }
 
         order.cancel();
     }
-
 }

@@ -1,21 +1,22 @@
 package com.springbeans.cafemenumanagement.order.service;
 
+import com.springbeans.cafemenumanagement.global.exception.BusinessException;
+import com.springbeans.cafemenumanagement.order.domain.entity.Order;
+import com.springbeans.cafemenumanagement.order.domain.entity.OrderProduct;
+import com.springbeans.cafemenumanagement.order.domain.repository.OrderRepository;
 import com.springbeans.cafemenumanagement.order.dto.request.OrderCreateRequest;
 import com.springbeans.cafemenumanagement.order.dto.response.OrderCancelResponse;
 import com.springbeans.cafemenumanagement.order.dto.response.OrderCreateResponse;
 import com.springbeans.cafemenumanagement.order.dto.response.OrderDetailResponse;
 import com.springbeans.cafemenumanagement.order.dto.response.OrderItemResponse;
 import com.springbeans.cafemenumanagement.order.dto.response.OrderSummaryResponse;
-import com.springbeans.cafemenumanagement.order.domain.entity.Order;
-import com.springbeans.cafemenumanagement.order.domain.entity.OrderProduct;
-import com.springbeans.cafemenumanagement.order.domain.repository.OrderRepository;
+import com.springbeans.cafemenumanagement.order.exception.OrderErrorCode;
 import com.springbeans.cafemenumanagement.product.entity.Product;
+import com.springbeans.cafemenumanagement.product.exception.ProductErrorCode;
 import com.springbeans.cafemenumanagement.product.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -32,10 +33,7 @@ public class OrderService {
      * 주문 생성
      */
     @Transactional
-    public OrderCreateResponse createOrder(
-            OrderCreateRequest request
-    ) {
-
+    public OrderCreateResponse createOrder(OrderCreateRequest request) {
 
         LocalDateTime now = LocalDateTime.now();
         LocalTime cutoff = LocalTime.of(14, 0);
@@ -47,35 +45,26 @@ public class OrderService {
 
         LocalDateTime start = end.minusDays(1);
 
-
-
-        Order order =
-                orderRepository
-                        .findFirstByEmailAndAddressAndOrderedAtBetween(
-                                request.email(),
-                                request.address(),
-                                start,
-                                end
-                        )
-                        .orElseGet(() -> {
-
-                            Order newOrder =
-                                    Order.create(
-                                            request.email(),
-                                            request.address(),
-                                            request.postalCode()
-                                    );
-
-                            return orderRepository.save(newOrder);
-                        });
-
+        Order order = orderRepository
+                .findFirstByEmailAndAddressAndOrderedAtBetween(
+                        request.email(),
+                        request.address(),
+                        start,
+                        end
+                                                              )
+                .orElseGet(() -> {
+                    Order newOrder = Order.create(
+                            request.email(),
+                            request.address(),
+                            request.postalCode()
+                                                 );
+                    return orderRepository.save(newOrder);
+                });
 
         request.items().forEach(item -> {
-
             // DB에서 실제 Product 엔티티 조회 (존재하지 않는 상품 예외 처리)
             Product product = productRepository.findById(item.productId())
-                    .orElseThrow(() -> new ResponseStatusException(
-                            HttpStatus.NOT_FOUND, "존재하지 않는 상품입니다. ID: " + item.productId()));
+                    .orElseThrow(() -> new BusinessException(ProductErrorCode.PRODUCT_NOT_FOUND));
 
             // 재고 차감 (프론트에서 재고 부족 여부를 미리 검증하므로 여기서는 별도 체크 없이 차감만 수행)
             product.decreaseStock(item.amount());
@@ -89,10 +78,7 @@ public class OrderService {
             order.addItem(orderItem);
         });
 
-
-        Order savedOrder =
-                orderRepository.save(order);
-
+        Order savedOrder = orderRepository.save(order);
 
         return new OrderCreateResponse(
                 savedOrder.getId(),
@@ -105,6 +91,7 @@ public class OrderService {
     /**
      * 주문 목록 조회 (전체, 최신순)
      */
+    @Transactional(readOnly = true)
     public List<OrderSummaryResponse> getOrders() {
 
         return orderRepository.findAllByOrderByOrderedAtDesc()
@@ -122,6 +109,7 @@ public class OrderService {
     /**
      * 이메일로 본인 주문 내역만 조회
      */
+    @Transactional(readOnly = true)
     public List<OrderSummaryResponse> getOrdersByEmail(String email) {
 
         return orderRepository.findByEmailOrderByOrderedAtDesc(email)
@@ -143,8 +131,7 @@ public class OrderService {
     public OrderDetailResponse getOrder(Long orderId) {
 
         Order order = orderRepository.findByIdWithProducts(orderId)
-                .orElseThrow(() ->
-                        new ResponseStatusException(HttpStatus.NOT_FOUND, "주문을 찾을 수 없습니다."));
+                .orElseThrow(() -> new BusinessException(OrderErrorCode.ORDER_NOT_FOUND));
 
         List<OrderItemResponse> items = order.getOrderProducts()
                 .stream()
@@ -185,14 +172,10 @@ public class OrderService {
     public OrderCancelResponse requestCancel(Long orderId) {
 
         Order order = orderRepository.findById(orderId)
-                .orElseThrow(() ->
-                        new ResponseStatusException(HttpStatus.NOT_FOUND, "주문을 찾을 수 없습니다."));
+                .orElseThrow(() -> new BusinessException(OrderErrorCode.ORDER_NOT_FOUND));
 
         if (!order.getStatus().isCancelable()) {
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    "취소할 수 없는 주문 상태입니다. (현재 상태: " + order.getStatus().getDescription() + ")"
-            );
+            throw new BusinessException(OrderErrorCode.NOT_CANCELABLE_STATUS);
         }
 
         order.requestCancel();

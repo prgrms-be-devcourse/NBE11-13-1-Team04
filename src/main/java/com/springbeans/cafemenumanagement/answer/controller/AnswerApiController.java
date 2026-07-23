@@ -1,11 +1,14 @@
 package com.springbeans.cafemenumanagement.answer.controller;
 
+import com.springbeans.cafemenumanagement.admin.auth.exception.AuthErrorCode;
 import com.springbeans.cafemenumanagement.answer.dto.request.AnswerSaveRequest;
 import com.springbeans.cafemenumanagement.answer.dto.response.AnswerSaveResponse;
 import com.springbeans.cafemenumanagement.answer.service.AnswerService;
 import com.springbeans.cafemenumanagement.global.constant.SessionConst;
+import com.springbeans.cafemenumanagement.global.exception.BusinessException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,24 +25,11 @@ public class AnswerApiController {
     @PostMapping("/questions/{questionId}/answers")
     public ResponseEntity<AnswerSaveResponse> create(
             @PathVariable Long questionId,
-            @RequestBody AnswerSaveRequest request,
+            @Valid @RequestBody AnswerSaveRequest request, // 1. DTO 유효성 검증 추가
             HttpServletRequest httpRequest
-    ) {
-        // 현재 세션 조회
-        HttpSession session = httpRequest.getSession(false);
-
-        if (session == null) {
-            // TODO : 관리자 인증 관련 커스텀 예외 적용
-            throw new IllegalArgumentException("관리자 로그인이 필요합니다.");
-        }
-
-        // 로그인한 관리자 ID 조회
-        Long adminId = (Long) session.getAttribute(SessionConst.ADMIN_ID);
-
-        if (adminId == null) {
-            // TODO : 관리자 인증 관련 커스텀 예외 적용
-            throw new IllegalArgumentException("관리자 로그인이 필요합니다.");
-        }
+                                                    ) {
+        // 2. 세션 및 관리자 PK 검증 (TODO 해결)
+        Long adminId = extractAdminId(httpRequest);
 
         // 답변 등록
         AnswerSaveResponse response = answerService.create(questionId, adminId, request);
@@ -53,9 +43,26 @@ public class AnswerApiController {
     @DeleteMapping("/answers/{answerId}")
     public ResponseEntity<Void> deleteAnswer(
             @PathVariable Long answerId
-    ) {
+                                            ) {
         answerService.delete(answerId);
 
         return ResponseEntity.noContent().build();
+    }
+
+    // 세션에서 관리자 PK 추출 및 검증 Helper 메서드
+    private Long extractAdminId(HttpServletRequest httpRequest) {
+        HttpSession session = httpRequest.getSession(false);
+
+        if (session == null) {
+            throw new BusinessException(AuthErrorCode.UNAUTHORIZED);
+        }
+
+        Long adminId = (Long) session.getAttribute(SessionConst.ADMIN_ID);
+
+        if (adminId == null) {
+            throw new BusinessException(AuthErrorCode.UNAUTHORIZED);
+        }
+
+        return adminId;
     }
 }

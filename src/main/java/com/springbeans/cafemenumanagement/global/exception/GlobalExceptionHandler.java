@@ -11,6 +11,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -69,6 +70,13 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(ApiErrorResponse.validation(exception.getErrorCode(), exception.getMessage(), Map.ofEntries()));
+    }
+
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<ApiErrorResponse> handleNoResourceFoundException( NoResourceFoundException exception ) {
+        log.warn("No static resource found: {}", exception.getMessage());
+        return ResponseEntity.notFound().build();
+
     }
 
     // 4. 예상치 못한 500 서버 내부 에러 처리 (★ 슬랙 알림 발송)
