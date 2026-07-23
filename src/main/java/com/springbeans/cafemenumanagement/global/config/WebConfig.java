@@ -1,4 +1,4 @@
-package com.springbeans.cafemenumanagement.product.config;
+package com.springbeans.cafemenumanagement.global.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
