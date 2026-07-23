@@ -90,10 +90,18 @@ public class AnswerService {
     }
 
     private void validateCreateRequest(AnswerSaveRequest request) {
-        if (request == null
-            || request.content() == null
-            || request.content().isBlank()) {
-            throw new BusinessException(AnswerErrorCode.EMPTY_CONTENT);
+
+        if (request == null) {
+            throw new BusinessException(
+                    AnswerErrorCode.ANSWER_REQUEST_REQUIRED
+            );
+        }
+
+        if (request.content() == null
+                || request.content().isBlank()) {
+            throw new BusinessException(
+                    AnswerErrorCode.ANSWER_CONTENT_REQUIRED
+            );
         }
     }
 }
